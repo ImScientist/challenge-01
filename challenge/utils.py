@@ -1,9 +1,10 @@
 import itertools
 import numpy as np
 import random
+from typing import *
 
 
-def generate_number_sequence(k=5):
+def generate_number_sequence(k: int = 5) -> str:
     sequence = random.choices('0123456789*#', weights=None, k=k)
     return ''.join(sequence)
 
@@ -65,7 +66,7 @@ def fingers_pos_to_fingers_pos_transition_cost(si: str, sf: str) -> float:
         return 0.
 
 
-def update_fingers_pos(x: str, finger: str, fingers_pos_i: str):
+def update_fingers_pos(x: str, finger: str, fingers_pos_i: str) -> str:
     if finger == 'L':
         fingers_pos_f = x + fingers_pos_i[1]
     else:
@@ -74,7 +75,7 @@ def update_fingers_pos(x: str, finger: str, fingers_pos_i: str):
     return fingers_pos_f
 
 
-def move_finger(x: str, state_i, finger: str):
+def move_finger(x: str, state_i, finger: str) -> Union[None, Tuple[str, float, str]]:
     """ Generate a new state from the movement of a finger to a new button
 
     :param x: next button that has to be pressed
@@ -100,7 +101,8 @@ def move_finger(x: str, state_i, finger: str):
     return fingers_pos_f, cost_f, pattern_f
 
 
-def generate_new_states(x: str, state_list):
+def generate_new_states(x: str, state_list: List[Tuple[str, float, str]]) \
+        -> List[Tuple[str, float, str]]:
     """ Generate new states from the old states by moving
     one of your fingers to the button `x`
 
@@ -121,13 +123,14 @@ def generate_new_states(x: str, state_list):
                            state_list)
 
     new_state_list = itertools.chain(state_list_left, state_list_right)
-    new_state_list = filter(lambda x: x is not None, new_state_list)
+    new_state_list = filter(lambda y: y is not None, new_state_list)
     new_state_list = list(new_state_list)
 
     return new_state_list
 
 
-def reduce_new_states(state_list):
+def reduce_new_states(state_list: List[Tuple[str, float, str]]) \
+        -> List[Tuple[str, float, str]]:
     """ Reduce the number of competitors / states
 
     From every group of competitors / states that have the same fingers_position
@@ -151,7 +154,8 @@ def reduce_new_states(state_list):
     return new_state_list
 
 
-def reformat_best_sequence(number_sequence: str, best_state):
+def reformat_best_sequence(number_sequence: str, best_state: Tuple[str, float, str]) \
+        -> Tuple[float, List[Tuple[str, str]]]:
     """ Map the finger sequence to the format expected by r***yr
 
     :param number_sequence: string of numbers that have to be pressed
@@ -175,7 +179,7 @@ def reformat_best_sequence(number_sequence: str, best_state):
     return cost, fingers_positions
 
 
-def compute_laziest_path(telephone_number: str):
+def compute_laziest_path(telephone_number: str) -> Tuple[float, List[Tuple[str, str]]]:
     fingers_pos, cost, used_fingers = '*#', 0, ''
 
     initial_state = (fingers_pos, cost, used_fingers)
@@ -183,11 +187,8 @@ def compute_laziest_path(telephone_number: str):
     state_list = [initial_state]
 
     for number in telephone_number:
-        # print(f'\n\nNumber {number}')
         state_list = generate_new_states(number, state_list)
-        # print(new_state_list)
         state_list = reduce_new_states(state_list)
-        # print(new_state_list)
 
     best_state = min(state_list, key=lambda x: x[1])
 
