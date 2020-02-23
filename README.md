@@ -84,7 +84,7 @@ The `distance_dict` has `k^2` keys that contain all combinations between two poi
 corresponding distances)    
 
 Time complexity:     
-- The algorithm time complexity is `O(nk)` if we exclude the `distance_dict` initialization. If we 
+- **The algorithm time complexity** is `O(nk)` if we exclude the `distance_dict` initialization. If we 
 take it into account the complexity will be `O(nk + k^2)`.  
 
 Space complexity:  
@@ -92,7 +92,7 @@ Space complexity:
 - The space used to store all states for every iteration is `kn`. `n` origins from the 
 finger registry (the last element of the state tuple) whose length grows to `n` in the 
 last iteration. 
-- The algorithm space complexity is `O(n + kn)` if we exclude the `distance_dict`. If we take it into 
+- **The algorithm space complexity** is `O(n + kn)` if we exclude the `distance_dict`. If we take it into 
 account it is `O(n + kn + k^2)`.
 
 ## Test the algorithm 
