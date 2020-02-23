@@ -26,8 +26,12 @@ For every `x_j` in the sequence of buttons do the following:
   
   - generate all possible states from the initial list of states by moving
     your left or right finger to `x_j`. Update the corresponding traversed Euclidean distances 
-    and the finger registries.   
-  - reduce the states: 
+    and the finger registries.  
+    
+    In the end of this operation the number of states should be at most 44: at most 22 states where 
+    the left, right finger is on `x_j`, respectively (this could be proved by induction). 
+    
+  - reduce the states:  
     If there are several states with the same finger position keep only the state with the smallest 
     traversed distance. For example:    
     ``` bash      
@@ -40,9 +44,20 @@ For every `x_j` in the sequence of buttons do the following:
     [('86', 3.41, 'LRR'),   
      ('96', 4.41, 'LLR')]      
     ```
+    In the end of this operation the number of states should be at most 22: at most 11 states where 
+    the left, right finger is on `x_j`, respectively (this could be proved by induction).   
+    
+    There is 
+    a valid reason why states like `('96', 5.06, 'RLR')` are dismissed. If we know the best path 
+    for `x_{j+1}, .. x_{n-1}` and apply it to all states with fingers position = '96' then all 
+    of them will increase the traversed Euclidean distance by the same amount, i.e. the 
+    dismissed state will never become the one with the lowest traversed Euclidean distance. 
+    
+       
    
 After going through the whole sequence `x_0, x_1, ... x__{n-1}` pick the state with the 
-smallest Euclidean distance.   
+smallest Euclidean distance. You can use the finger registry to reconstruct the movement 
+of both fingers.   
 
 ## Complexity  
 
@@ -50,13 +65,27 @@ smallest Euclidean distance.
 - For every button in this sequence there are `2(k-1)` possible finger configurations: 
 `k-1` configurations where the left finger is on `x_j` and the right finger is 
 somewhere else and vice versa.  
-- In the beginning of every iteration you can start with at most `2(k-1)` states, 
-generate `4(k-1)` new states and then reduce them to at most `2(k-1)` states.
+- In every iteration (j):
+    - you can start with at most `2(k-1)` states, where either the left or the right 
+    finger is on `x_{j-1}`. 
+    - you can generate at most `4(k-1)` new states where the left or the right finger is on `x_j`.    
+    - you can reduce the states to at most `2(k-1)` states.
+    
+- I was lazy in the implementation of the function that calculates the distance between two points. 
+The `distance_dict` has `k^2` keys that contain all combinations between two points (and the 
+corresponding distances)    
 
-It follows that:
-- The computation time depends linearly on the sequence length `n`, i.e. we have `O(n)` complexity.   
-- The computation time depends linearly on number of keys `k`, i.e. we have `O(k)` complexity.   
-- The algorithm complexity is `O(nk)`
+Time complexity:     
+- The algorithm time complexity is `O(nk)` if we exclude the `distance_dict` initialization. If we 
+take it into account the complexity will be `O(nk + k^2)`.  
+
+Space complexity:  
+- The space used to store the number sequence is linear in `n`.
+- The space used to store all states for every iteration is `kn`. `n` origins from the 
+finger registry (the last element of the state tuple) whose length grows to `n` in the 
+last iteration. 
+- The algorithm space complexity is `O(n + k)` if we exclude the `distance_dict`. If we take it into 
+account it is `O(n + k^2)`.
 
 ## Test the algorithm 
 
@@ -73,7 +102,7 @@ It follows that:
     python compute_laziest_path.py --sequence 89602
     ```
   
-- Measure how the model scales by increasing the number sequence length:
+- Measure how the computation time scales by increasing the number sequence length:
     ```bash
     python measure_complexity.py
     ```

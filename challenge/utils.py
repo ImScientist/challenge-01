@@ -142,14 +142,21 @@ def reduce_new_states(state_list: List[Tuple[str, float, str]]) \
         (fingers_position, accumulated cost,  moved fingers sequence)
     """
 
-    # sort by finger_position
-    state_list = sorted(state_list, key=lambda x: x[0])
+    reduced_states = dict()
 
-    # group by finger_position and take the element with minimal cost
-    new_state_list = []
-    for k, g in itertools.groupby(state_list, key=lambda x: x[0]):
-        min_item = min(g, key=lambda x: x[1])
-        new_state_list.append(min_item)
+    for state in state_list:
+
+        finger_pos, cost, finger_sequence = state
+
+        finger_pos_red, cost_red, finger_sequence_red = reduced_states.get(
+            finger_pos, (None, None, None))
+
+        if cost_red is None:
+            reduced_states[finger_pos] = state
+        elif cost < cost_red:
+            reduced_states[finger_pos] = state
+
+    new_state_list = [v for k, v in reduced_states.items()]
 
     return new_state_list
 

@@ -1,5 +1,3 @@
-import os
-import sys
 from challenge.utils import *
 
 
@@ -50,12 +48,15 @@ def test_reduce_new_states():
     ]
 
     states_list = reduce_new_states(states_list)
+
+    print(states_list)
+
     assert states_list == [
-        ('*0', 5.650281539872885, 'RRRR'),
-        ('0#', 5.650281539872885, 'LLLL'),
         ('06', 4.414213562373095, 'RRRL'),
+        ('0#', 5.650281539872885, 'LLLL'),
         ('08', 6.8863495173726745, 'RLLL'),
         ('09', 6.06449510224598, 'LRLL'),
+        ('*0', 5.650281539872885, 'RRRR'),
         ('60', 4.414213562373095, 'LLLR'),
         ('80', 5.650281539872885, 'LRRR'),
         ('90', 6.650281539872885, 'LLRR')
@@ -63,17 +64,17 @@ def test_reduce_new_states():
 
 
 def test_reformat_best_sequence():
-    number_sequence = '89602'
-    best_state = ('02', 5.82842712474619, 'RRRLR')
+    number_sequence = '19602'
+    best_state = ('02', 8.23606797749979, 'RRRLR')
 
     res = reformat_best_sequence(number_sequence=number_sequence, best_state=best_state)
-    assert res == (5.82842712474619,
-                   [('*', '#'), ('*', '8'), ('*', '9'), ('*', '6'), ('0', '6'), ('0', '2')])
+    assert res == (8.23606797749979,
+                   [('*', '#'), ('*', '1'), ('*', '9'), ('*', '6'), ('0', '6'), ('0', '2')])
 
 
 def test_compute_laziest_path():
-    number_sequence = '89602'
+    number_sequence = '19602'
     res = compute_laziest_path(number_sequence)
 
-    assert res == (5.82842712474619,
-                   [('*', '#'), ('*', '8'), ('*', '9'), ('*', '6'), ('0', '6'), ('0', '2')])
+    assert res == (8.23606797749979,
+                   [('*', '#'), ('1', '#'), ('1', '9'), ('1', '6'), ('1', '0'), ('2', '0')])
