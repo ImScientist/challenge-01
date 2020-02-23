@@ -84,8 +84,8 @@ Space complexity:
 - The space used to store all states for every iteration is `kn`. `n` origins from the 
 finger registry (the last element of the state tuple) whose length grows to `n` in the 
 last iteration. 
-- The algorithm space complexity is `O(n + k)` if we exclude the `distance_dict`. If we take it into 
-account it is `O(n + k^2)`.
+- The algorithm space complexity is `O(n + kn)` if we exclude the `distance_dict`. If we take it into 
+account it is `O(n + kn + k^2)`.
 
 ## Test the algorithm 
 
