@@ -37,7 +37,7 @@ For every `x_j` in the sequence of buttons do the following:
     ```
     
     In the end of this operation the number of states should be at most 44: at most 22 states where 
-    the left, right finger is on `x_j`, respectively (this could be proved by induction). 
+    the left or right finger is on `x_j`, respectively (this can be proved by induction). 
     
   - reduce the states:  
     If there are several states with the same finger position keep only the state with the smallest 
@@ -53,7 +53,7 @@ For every `x_j` in the sequence of buttons do the following:
      ('96', 4.41, 'LLR')]      
     ```
     In the end of this operation the number of states should be at most 22: at most 11 states where 
-    the left, right finger is on `x_j`, respectively (this could be proved by induction).   
+    the left or right finger is on `x_j`, respectively (this can be proved by induction).   
     
     There is 
     a valid reason why states like `('96', 5.06, 'RLR')` are dismissed. If we know the best path 
