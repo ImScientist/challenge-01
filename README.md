@@ -26,7 +26,15 @@ For every `x_j` in the sequence of buttons do the following:
   
   - generate all possible states from the initial list of states by moving
     your left or right finger to `x_j`. Update the corresponding traversed Euclidean distances 
-    and the finger registries.  
+    and the finger registries. For example, if `x_j = 5`:  
+    ``` bash      
+    [('28', 3.41, 'LRR')]      
+    ```
+    is mapped to  
+    ``` bash      
+    [('58', 4.41, 'LRRL'),
+     ('25', 4.41, 'LRRR')]      
+    ```
     
     In the end of this operation the number of states should be at most 44: at most 22 states where 
     the left, right finger is on `x_j`, respectively (this could be proved by induction). 
